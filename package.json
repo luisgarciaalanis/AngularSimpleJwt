@@ -1,0 +1,24 @@
+{
+  "name": "jwt-auth",
+  "version": "0.1.0",
+  "description": "Jwt authentication for AngularJs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Angular",
+    "JWT",
+    "Auth"
+  ],
+  "author": "Luis Garcia Alanis",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-wrap": "^0.11.0",
+    "jshint": "^2.9.1"
+  }
+}
