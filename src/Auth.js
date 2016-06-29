@@ -1,4 +1,4 @@
-function Auth($q, $http, $rootRouter, AuthToken, loginUrl, logoutRedirect) {
+function Auth($q, $http, $location, AuthToken, loginUrl, logoutRedirect) {
     /**
      * Method to verify if the user is authenticated
      *
@@ -14,11 +14,11 @@ function Auth($q, $http, $rootRouter, AuthToken, loginUrl, logoutRedirect) {
      */
     this.logout = function() {
         AuthToken.deleteToken();
-        $rootRouter.navigate(logoutRedirect);
+        $location.path(logoutRedirect);
     };
 
     /**
-     * Thie method logs in given a set of credentials. We POST a message to the server tp get authenticated, the server
+     * This method logs in given a set of credentials. We POST a message to the server tp get authenticated, the server
      * will return a token that we will store and use it as a token to send with every request to the server to be
      * granted access to the different API calls.
      *

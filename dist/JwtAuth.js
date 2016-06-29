@@ -2,8 +2,9 @@
 "use strict";
 var JwtAuth = angular.module('JwtAuth', ['ngStorage']);
 
+module.exports = JwtAuth;
 
-function Auth($q, $http, $rootRouter, AuthToken, loginUrl, logoutRedirect) {
+function Auth($q, $http, $location, AuthToken, loginUrl, logoutRedirect) {
     /**
      * Method to verify if the user is authenticated
      *
@@ -19,11 +20,11 @@ function Auth($q, $http, $rootRouter, AuthToken, loginUrl, logoutRedirect) {
      */
     this.logout = function() {
         AuthToken.deleteToken();
-        $rootRouter.navigate(logoutRedirect);
+        $location.path(logoutRedirect);
     };
 
     /**
-     * Thie method logs in given a set of credentials. We POST a message to the server tp get authenticated, the server
+     * This method logs in given a set of credentials. We POST a message to the server tp get authenticated, the server
      * will return a token that we will store and use it as a token to send with every request to the server to be
      * granted access to the different API calls.
      *
@@ -46,23 +47,26 @@ function Auth($q, $http, $rootRouter, AuthToken, loginUrl, logoutRedirect) {
     };
 }
 
-/*
-* AuthProvider
-*/
-JwtAuth.provider('jwtAuth', function() {
+/**
+ * JwtAuthProvider
+ */
+JwtAuth.provider('JwtAuth', function() {
     var auth = null;
     this.loginUrl = '';
     this.logoutRedirect = '';
 
-    this.$get = ['$q', '$http', '$rootRouter', 'AuthToken', function AuthFactory($q, $http, $rootRouter, AuthToken) {
+    this.$get = ['$q', '$http', '$location', 'AuthToken', function AuthFactory($q, $http, $location, AuthToken) {
         if (auth  === null) {
-            auth = new Auth($q, $http, $rootRouter, AuthToken, this.loginUrl, this.logoutRedirect);
+            auth = new Auth($q, $http, $location, AuthToken, this.loginUrl, this.logoutRedirect);
         }
 
         return auth;
     }];
 });
 
+/**
+ * AuthToken Service
+ */
 JwtAuth.service('AuthToken', ['$window', '$localStorage', function AuthToken($window, $localStorage) {
     var self = this;
     var cachedToken = $localStorage.token;
@@ -131,6 +135,12 @@ JwtAuth.service('AuthToken', ['$window', '$localStorage', function AuthToken($wi
 }]);
 
 JwtAuth.factory('HttpAuthInterceptor', ['AuthToken', function(AuthToken) {
+    /**
+     * Sets the Http interceptor to add the token on every http* call if available
+     * 
+     * @param AuthToken
+     * @constructor
+     */
     function HttpAuthInterceptor(AuthToken) {
         this.request = function(config) {
             var token = AuthToken.getToken();

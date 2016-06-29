@@ -1,14 +1,14 @@
 /**
- * AuthProvider
+ * JwtAuthProvider
  */
-JwtAuth.provider('jwtAuth', function() {
+JwtAuth.provider('JwtAuth', function() {
     var auth = null;
     this.loginUrl = '';
     this.logoutRedirect = '';
 
-    this.$get = ['$q', '$http', '$rootRouter', 'AuthToken', function AuthFactory($q, $http, $rootRouter, AuthToken) {
+    this.$get = ['$q', '$http', '$location', 'AuthToken', function AuthFactory($q, $http, $location, AuthToken) {
         if (auth  === null) {
-            auth = new Auth($q, $http, $rootRouter, AuthToken, this.loginUrl, this.logoutRedirect);
+            auth = new Auth($q, $http, $location, AuthToken, this.loginUrl, this.logoutRedirect);
         }
 
         return auth;
